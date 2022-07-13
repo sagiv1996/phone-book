@@ -1,0 +1,55 @@
+﻿@model phoneBook.Models.Group
+@using phoneBook.Models;
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+<div class="menu">
+    @Html.ActionLink("הוסף קבוצה חדשה", "Create", new { id = Model.ID }, null);
+</div>
+<div>
+    <h4>
+        @this.Model.Description
+    </h4>
+    <hr />
+    @if (this.Model.Items.Count == 0)
+    {
+        <span>לא קיימים פריטים בספר טלפונים</span>
+    }
+    else
+    {
+        foreach (itemInBook item in this.Model.Items)
+        {
+            if (item is Group)
+            {
+                <div class="item">
+                    <span class="action">
+                        @Html.ActionLink("Edit", "Edit", "Group", new { id=item.ID}, null)
+                    </span>
+                    <span>
+                        @Html.ActionLink("Delete", "Delete", "Group", new { id = item.ID }, null)
+                    </span>
+                    @Html.ActionLink(item.Description, "Index/" + item.ID)
+                </div>
+            }
+            else
+            {
+                <div class="item">
+                    @item.Description
+                </div>
+            }
+        }
+    }
+    </div>
+       @if  (this.Model.Parent != null)
+       {
+        <div>
+            @Html.ActionLink("חזור ל "+ this.Model.Parent.Name, "Index/" + this.Model.Parent.ID)
+        </div>
+       }
+    
+    <div>
+        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        <a asp-action="Index">Back to List</a>
+    </div>
